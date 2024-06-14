@@ -10,26 +10,33 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
+import { CornerDownLeft, Loader, Mic, Paperclip } from "lucide-react";
 import { useChat } from "ai/react";
+import { ElementRef, useRef } from "react";
+import { ChatMessage } from "@/app/(dashboard)/chat/_components/chat-message";
 
 export function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const ref = useRef<ElementRef<"form">>(null);
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat();
 
   return (
     <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
-      <Badge variant="outline" className="absolute right-3 top-3">
+      <Badge variant="outline" className="absolute bg-background right-3 top-3">
         Output
       </Badge>
-      <div className="flex-1">
+      <div className="flex-1 pb-2 pt-8  pr-2 space-y-3">
         {messages.map((message) => (
-          <div key={message.id}>
-            {message.role === "user" ? "You:" : "AI"}
-            {message.content}
-          </div>
+          <ChatMessage
+            key={message.id}
+            message={message.content}
+            isUser={message.role === "user"}
+          />
         ))}
       </div>
       <form
+        ref={ref}
         className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring"
         onSubmit={handleSubmit}
       >
@@ -64,9 +71,20 @@ export function Chat() {
               <TooltipContent side="top">Use Microphone</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <Button type="submit" size="sm" className="ml-auto gap-1.5">
-            Send Message
-            <CornerDownLeft className="size-3.5" />
+          <Button
+            disabled={isLoading}
+            type="submit"
+            size="sm"
+            className="ml-auto gap-1.5 transition ease-in-out"
+          >
+            {isLoading ? (
+              <Loader className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                Send Message
+                <CornerDownLeft className="size-3.5" />
+              </>
+            )}
           </Button>
         </div>
       </form>

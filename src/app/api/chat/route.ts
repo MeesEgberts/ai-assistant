@@ -9,6 +9,8 @@ export const maxDuration = 60;
 export async function POST(request: Request) {
   const { messages } = await request.json();
 
+  console.log(messages);
+
   const { userId } = auth();
 
   if (!userId) throw new Error("Unauthorized");
@@ -23,7 +25,10 @@ export async function POST(request: Request) {
 
   const result = await streamText({
     model: openai("gpt-4o"),
-    messages: convertToCoreMessages(messages),
+    messages,
+    async onFinish({ text }) {
+      console.log({ text });
+    },
   });
 
   return result.toAIStreamResponse();
