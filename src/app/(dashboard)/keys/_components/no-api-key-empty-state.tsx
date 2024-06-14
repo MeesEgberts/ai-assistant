@@ -6,7 +6,7 @@ export function NoApiKeyEmptyState() {
       <Key className="w-12 h-12 mx-auto mb-8" />
       <div className="text-lg font-semibold">No API Key Found</div>
       <p className="text-sm text-muted-foreground">
-        You haven't added any API keys yet. Click the button above to get
+        You haven&apos;t added any API keys yet. Click the button above to get
         started.
       </p>
     </div>
