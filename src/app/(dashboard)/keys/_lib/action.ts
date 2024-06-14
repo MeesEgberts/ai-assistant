@@ -7,6 +7,7 @@ import { keys } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { routes } from "@/app/_lib/routes";
+import { and, eq } from "drizzle-orm";
 
 export async function createApiKey(_: unknown, data: FormData) {
   const submission = parseWithZod(data, {
@@ -40,4 +41,16 @@ export async function createApiKey(_: unknown, data: FormData) {
   revalidatePath(routes.keys);
 
   return submission.reply();
+}
+
+export async function deleteApiKey(id: string) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  await db.delete(keys).where(and(eq(keys.user_id, userId), eq(keys.id, id)));
+
+  revalidatePath(routes.keys);
 }

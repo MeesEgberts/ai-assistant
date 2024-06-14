@@ -19,9 +19,14 @@ import { createApiKey } from "@/app/(dashboard)/keys/_lib/action";
 import { SubmitButton } from "@/components/submit-button";
 import { FormField } from "@/components/form-field";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export function AddApiKeyDialog() {
+interface Props {
+  disabled: boolean;
+}
+
+export function AddApiKeyDialog({ disabled }: Props) {
   const [open, setOpen] = useState(false);
 
   const [state, action] = useFormState(createApiKey, undefined);
@@ -36,12 +41,17 @@ export function AddApiKeyDialog() {
     },
   });
 
-  // on form success
+  useEffect(() => {
+    if (state?.status === "success") {
+      toast.success("API key added successfully");
+      setOpen(false);
+    }
+  }, [state]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button disabled={disabled}>
           Add API key
           <PlusCircle className="w-4 h-4 ml-2" />
         </Button>

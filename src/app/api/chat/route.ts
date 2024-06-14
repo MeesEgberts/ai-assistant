@@ -13,15 +13,13 @@ export async function POST(request: Request) {
 
   if (!userId) throw new Error("Unauthorized");
 
-  /*const apiKey = await getOpenAiApiKey(userId);
+  const apiKey = await getOpenAiApiKey(userId);
 
   if (!apiKey) throw new Error("No OpenAI API key found");
 
   const openai = createOpenAI({
     apiKey: apiKey.key,
   });
-
-   */
 
   const result = await streamText({
     model: openai("gpt-4o"),
