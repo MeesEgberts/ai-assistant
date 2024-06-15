@@ -26,7 +26,7 @@ export function Chat() {
       <Badge variant="outline" className="absolute bg-background right-3 top-3">
         Output
       </Badge>
-      <div className="flex-1 pb-2 pt-8  pr-2 space-y-3">
+      <div className="flex-1 pb-2 pt-8 pr-2 space-y-3">
         {messages.map((message) => (
           <ChatMessage
             key={message.id}

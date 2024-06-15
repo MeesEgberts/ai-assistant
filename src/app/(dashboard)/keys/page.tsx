@@ -21,7 +21,7 @@ export default async function ApiKeysPage() {
   return (
     <Card>
       <CardHeader className="border-b flex-row justify-between items-center">
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex flex-col space-y-1.5 mr-1">
           <CardTitle>Your API keys</CardTitle>
           <CardDescription>
             Configure your API keys for different AI providers
